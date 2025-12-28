@@ -314,15 +314,21 @@ def range_learning_negll(params, pumps_arr, exploded_arr):
 
 def bsr_par4_negll(params, pumps_arr, exploded_arr):
     """
-    BSR/Par4 Model negative log-likelihood (Wallsten et al., 2005).
-    
+    BSR/Par4 Model negative log-likelihood (inspired by Wallsten et al., 2005).
+
     Bayesian Sequential Risk model with 4 parameters.
-    
+
+    NOTE: This uses a simplified pseudo-Bayesian update rather than the exact
+    beta-binomial formulation. The update rule is:
+        p_not_burst = (phi + eta * total_successes) / (1 + eta * total_pumps)
+    This is equivalent to a weighted average of prior (phi) and observed rate,
+    where data weight grows linearly with observations scaled by eta.
+
     Parameters:
     - phi: prior belief that balloon will NOT burst (per pump)
-    - eta: learning/updating rate
-    - gamma: risk-taking parameter
-    - tau: inverse temperature / consistency
+    - eta: learning/updating rate (higher = trust data more quickly)
+    - gamma: risk-taking parameter (multiplier on optimal pumps)
+    - tau: inverse temperature / consistency (higher = less noise)
     """
     phi, eta, gamma, tau = params
     
@@ -480,11 +486,12 @@ def ewmv_negll(params, pumps_arr, exploded_arr):
     if tau <= 0 or tau > 10: return 1e10
     
     # Track cumulative experience for Bayesian-like updating
-    # We track total successful pumps and total explosions to estimate
-    # the per-pump burst probability
-    total_successful_pumps = 0  # Pumps that didn't cause explosion
-    total_explosion_pumps = 1   # Pumps that caused explosion (add 1 for prior)
-    total_pumps_observed = 1    # Total pumps observed (add 1 for prior)
+    # We track total explosions and total pumps to estimate per-pump burst probability
+    # Use psi-consistent prior: if psi is the prior burst rate, we add pseudocounts
+    # equivalent to observing ~64 pumps with psi*64 bursts (roughly 1 burst if psi≈1/64)
+    prior_strength = 64  # Prior sample size (equivalent to ~1 balloon's worth of pumps)
+    total_explosion_pumps = psi * prior_strength  # Prior bursts (e.g., ~1 if psi=1/64)
+    total_pumps_observed = prior_strength          # Prior pumps observed
     
     total_ll = 0.0
     sd = max(1, 1/tau * 20)  # Behavioral noise
@@ -529,13 +536,11 @@ def ewmv_negll(params, pumps_arr, exploded_arr):
         # =====================================================================
         if exploded_arr[i] == 0:  # Cash-out (survived)
             total_ll += norm.logpdf(pumps_arr[i], loc=target, scale=sd)
-            # All pumps were successful
-            total_successful_pumps += pumps_arr[i]
+            # All pumps were successful - add to total observations
             total_pumps_observed += pumps_arr[i]
         else:  # Explosion
             total_ll += norm.logsf(pumps_arr[i], loc=target, scale=sd)
-            # pumps_arr[i]-1 were successful, 1 caused explosion
-            total_successful_pumps += max(0, pumps_arr[i] - 1)
+            # One pump caused explosion out of pumps_arr[i] total
             total_explosion_pumps += 1
             total_pumps_observed += pumps_arr[i]
     
