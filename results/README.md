@@ -134,6 +134,41 @@ Partial correlations controlling for cognitive ability and mean_pumps.
 
 ---
 
+### rt_metrics.csv
+**Source**: `bart_rt_analysis.py`
+
+Reaction time metrics extracted for each participant.
+
+| Column | Description |
+|--------|-------------|
+| partid | Participant ID |
+| rt_mean | Average RT across all pumps (ms) |
+| rt_sd | Within-person RT standard deviation |
+| rt_cv | Coefficient of variation (consistency) |
+| rt_first_mean | Average first-pump RT (deliberation time) |
+| rt_late_mean | Average RT for last 5 pumps (near threshold) |
+| rt_trend_mean | Within-trial RT slope (speeding/slowing) |
+| rt_skew | RT distribution skewness |
+| rt_post_explosion | RT after explosion trials |
+| rt_post_success | RT after successful cash-outs |
+| rt_explosion_effect | RT change after explosions |
+
+**Key findings**:
+- rt_mean × Neuroticism: r = .15* (neurotic people respond slower)
+- rt_cv × Extraversion: r = -.14* (extraverts are more consistent)
+- rt_mean × loss_aversion: r = .64*** (convergent validity)
+
+---
+
+### rt_convergent_validity_findings.md
+**Source**: `bart_rt_analysis.py` + theoretical synthesis
+
+Detailed writeup of the convergent validity finding between RT and loss aversion ratio.
+
+**Key finding**: RT and loss aversion ratio predict Neuroticism equally well (r ≈ .14-.15) and correlate r = .64 with each other, providing construct validity evidence that the Range Learning model extracts psychologically meaningful parameters.
+
+---
+
 ## Summary Statistics
 
 | File | Key Metric | Value |
@@ -142,6 +177,7 @@ Partial correlations controlling for cognitive ability and mean_pumps.
 | bart_with_composites | Best composite | COMPOSITE_optimal (r = .30) |
 | extreme_groups | Effect size ratio | Approach/Impulsivity = 2.8x |
 | parameter_personality | Best parameter-trait | α⁺ × Extraversion (r = .19) |
+| rt_metrics | RT × Loss Aversion convergence | r = .64*** |
 
 ---
 
@@ -153,3 +189,4 @@ These results collectively support the conclusion that **the BART measures Appro
 2. Weak correlations with impulsivity and pathology
 3. Different model parameters mapping to different personality traits
 4. High pumpers being more cognitively able, not less
+5. **Convergent validity**: RT patterns and model parameters predict the same personality traits, validating that the model extracts psychologically meaningful parameters

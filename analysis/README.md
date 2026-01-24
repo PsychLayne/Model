@@ -162,6 +162,43 @@ Our conclusion: The BART measures **Approach-Oriented Risk Tendency** - a stable
 
 ---
 
+### 10. bart_rt_analysis.py
+**Purpose**: Test whether RT patterns correlate with personality and model parameters
+
+**What it does**:
+- Extracts RT metrics per participant (mean, SD, CV, trend, post-explosion effects)
+- Correlates RT with Big Five personality
+- Correlates RT with model parameters
+- Tests convergent validity between RT and loss aversion
+
+**Key findings**:
+- rt_mean × Neuroticism: r = .15* (neurotic people respond slower)
+- rt_cv × Extraversion: r = -.14* (extraverts are more consistent)
+- rt_trend × alpha_minus: r = .44*** (RT patterns predict learning rates)
+- **RT × Loss Aversion: r = .64*** (convergent validity)**
+
+**Critical insight**: RT and loss aversion ratio predict Neuroticism equally well and correlate strongly with each other. This provides construct validity evidence that the model extracts psychologically meaningful parameters.
+
+---
+
+### 11. model_improvements_theory.md
+**Purpose**: Theorycrafting document for improving personality extraction from BART
+
+**Contents**:
+- Proposed improvements to Range Learning model (RT integration, dynamic thresholds, sequence-dependent learning)
+- Novel model architectures (dual-process, hierarchical Bayesian, state-space)
+- The Agreeableness problem and potential solutions
+- Implementation priorities and predicted correlation improvements
+- Validation strategy for new models
+
+**Key recommendations**:
+1. Integrate RT parameters (immediate, high impact)
+2. Add dynamic threshold parameter (ω_drift)
+3. Consider dual-process model to finally capture impulsivity (BIS)
+4. Accept r ≈ .30-.35 ceiling due to method variance
+
+---
+
 ## Running the Analyses
 
 ```bash
@@ -188,5 +225,6 @@ pip install pandas numpy scipy scikit-learn
 | Behavioral Dynamics | Variability ≠ Impulsivity |
 | Parameter Mapping | α⁺→E, α⁻→Cognitive, ω₀→O |
 | Raw vs Model | Opposite signs for cognitive ability |
+| **RT Convergent Validity** | **RT × Loss Aversion r=.64, both predict N at r≈.15** |
 
-**Conclusion**: The BART measures Approach-Oriented Risk Tendency, not impulsivity.
+**Conclusion**: The BART measures Approach-Oriented Risk Tendency, not impulsivity. The Range Learning model extracts psychologically meaningful parameters validated by convergence with RT patterns.

@@ -80,6 +80,24 @@ The model separates WHAT you do from HOW you learn.
 
 ---
 
+## Convergent Validity: RT Confirms Model Parameters
+
+A critical validation: **Reaction time patterns and model-derived loss aversion predict the same personality traits.**
+
+| Measure | Derivation | Neuroticism r |
+|---------|------------|---------------|
+| rt_mean | Simple RT average | .15* |
+| Loss Aversion Ratio | α⁻/α⁺ from model | .14* |
+
+**Inter-correlation: r = .64***
+
+This convergence provides construct validity evidence:
+- The model isn't inventing abstract parameters—it's formalizing observable behavioral hesitation
+- Neurotic individuals both respond slower (RT) AND show higher loss aversion (model)
+- Two independent measurement approaches identify the same individual differences
+
+---
+
 ## Theoretical Implications
 
 ### The BART is NOT:
